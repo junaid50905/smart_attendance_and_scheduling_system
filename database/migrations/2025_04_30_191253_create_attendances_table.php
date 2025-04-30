@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('class_schedule_id')->constrained();
+            $table->foreignId('student_id')->constrained();
+            $table->enum('status', ['present', 'absent', 'late']);
+            $table->timestamp('marked_at');
             $table->timestamps();
         });
     }
