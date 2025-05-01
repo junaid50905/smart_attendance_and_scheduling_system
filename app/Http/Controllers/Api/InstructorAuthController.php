@@ -18,7 +18,12 @@ class InstructorAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'user' => Auth::guard('instructor')->user()
+            'user' => Auth::guard('instructor')->user(),
+            'role' => 'instructor',
+            'something' => [
+                'one' => 'This is one data for student',
+                'two' => 'This is two data for student'
+            ]
         ]);
     }
 
@@ -35,5 +40,11 @@ class InstructorAuthController extends Controller
             ]
         ]);
     }
+    public function logout()
+    {
+        Auth::guard('instructor')->logout();
+        return response()->json(['message' => 'Instructor logged out successfully']);
+    }
+
 
 }
