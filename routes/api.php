@@ -17,12 +17,14 @@ Route::get('/user', function (Request $request) {
 // Student
 Route::post('student/login', [StudentAuthController::class, 'login']);
 Route::middleware('auth:student')->get('student/dashboard', [StudentAuthController::class, 'dashboard']);
+Route::middleware('auth:student')->get('student/upcoming-classes', [StudentAuthController::class, 'upcomingClasses']);
 Route::middleware('auth:student')->post('student/logout', [StudentAuthController::class, 'logout']);
 
 
 // Instructor
 Route::post('instructor/login', [InstructorAuthController::class, 'login']);
 Route::middleware('auth:instructor')->get('instructor/dashboard', [InstructorAuthController::class, 'dashboard']);
+Route::middleware('auth:instructor')->get('instructor/schedule-classes', [InstructorAuthController::class, 'scheduleClasses']);
 Route::middleware('auth:instructor')->post('instructor/logout', [InstructorAuthController::class, 'logout']);
 
 

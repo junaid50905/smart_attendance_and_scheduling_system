@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('class_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('batch_id')->constrained();
+            $table->foreignId('instructor_id')->constrained();
             $table->string('topic');
             $table->timestamp('start_time');
             $table->integer('duration'); // in minutes

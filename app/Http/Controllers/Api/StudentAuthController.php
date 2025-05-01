@@ -28,6 +28,10 @@ class StudentAuthController extends Controller
         ]);
     }
 
+    /**
+     * Summary of dashboard
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function dashboard()
     {
         $student = Auth::guard('student')->user();
@@ -41,6 +45,17 @@ class StudentAuthController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Summary of upcomingClasses
+     * @return void
+     */
+
+
+    /**
+     * Summary of logout
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function logout()
     {
         Auth::guard('student')->logout();

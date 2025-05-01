@@ -12,7 +12,7 @@ class ClassSchedule extends Model
 
     protected $table = 'class_schedules';
 
-    protected $fillable = ['batch_id', 'topic', 'start_time', 'duration'];
+    protected $fillable = ['batch_id', 'instructor_id', 'topic', 'start_time', 'duration'];
 
 
 
