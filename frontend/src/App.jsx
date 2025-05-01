@@ -11,6 +11,7 @@ import MarkAttendance from "./pages/MarkAttendance";
 import PrivateRoute from "./components/PrivateRoute";
 
 import "./App.css";
+import Batches from "./pages/Batches";
 
 function App() {
 
@@ -41,6 +42,10 @@ function App() {
                     <Route
                         path="/mark-attendance"
                         element={<MarkAttendance />}
+                    />
+                    <Route
+                        path="/batches"
+                        element={<Batches />}
                     />
                 </Route>
 

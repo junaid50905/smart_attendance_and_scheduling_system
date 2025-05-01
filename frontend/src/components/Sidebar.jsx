@@ -26,8 +26,8 @@ const Sidebar = () => {
             icon: <ClipboardCheck size={20} />,
         },
         {
-            path: "/certificate",
-            label: "Certificate",
+            path: "/batches",
+            label: "Batches",
             icon: <FileText size={20} />,
         },
         { path: "/settings", label: "Settings", icon: <Settings size={20} /> },
