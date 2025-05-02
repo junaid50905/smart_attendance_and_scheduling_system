@@ -49,7 +49,7 @@ A web-based application that enables students to mark attendance within a 10-min
 
 3. **Install dependencies:**
    ```bash
-    https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+    composer install
    ```
 
 4. Copy ```.env.example``` to ```.env``` and configure your database settings.
