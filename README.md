@@ -38,17 +38,20 @@ A web-based application that enables students to mark attendance within a 10-min
 
 1. **Clone the repository:**
    ```bash
-    git clone https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+    git clone git clone https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+   ```
    ```
 
 2. **Install dependencies:**
    ```bash
     cd smart_attendance_and_scheduling_system
-   ```
+   ```   ```
 
 
 3. **Install dependencies:**
    ```bash
+    composer install
+   ```
     composer install
    ```
 
@@ -59,16 +62,19 @@ A web-based application that enables students to mark attendance within a 10-min
    ```bash
     php artisan key:generate
    ```
+   ```
 
 6. **Install dependencies:**
    ```bash
     php artisan migrate
    ```
+      ```
    
 
 7. **Run seeder:**
    ```bash
     php artisan migrate:fresh --seed
+   ```
    ```
 
 
@@ -105,7 +111,7 @@ email: see your database admins, instructors, and students table
 password: password
 ```
 
-### Here are some users' credentials have been given below
+### Here are some users' credentials examples have been given below, and these credentials don't match with your database
 
 #### Instructor
 ```
