@@ -10,6 +10,8 @@ use Database\Seeders\InstructorSeeder;
 use Database\Seeders\AttendanceSeeder;
 use Database\Seeders\BatchSeeder;
 use Database\Seeders\ClassScheduleSeeder;
+use Database\Seeders\AdminSeeder;
+
 
 
 
@@ -23,7 +25,8 @@ class DatabaseSeeder extends Seeder
             InstructorSeeder::class,
             AttendanceSeeder::class,
             BatchSeeder::class,
-            ClassScheduleSeeder::class,            
+            ClassScheduleSeeder::class,    
+            AdminSeeder::class        
         ]);
     }
 }
