@@ -40,21 +40,18 @@ A web-based application that enables students to mark attendance within a 10-min
    ```bash
     git clone git clone https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
    ```
-   ```
 
 2. **Install dependencies:**
    ```bash
     cd smart_attendance_and_scheduling_system
-   ```   ```
+   ```  
 
 
 3. **Install dependencies:**
    ```bash
     composer install
    ```
-    composer install
-   ```
-
+    
 4. Copy ```.env.example``` to ```.env``` and configure your database settings.
 
 
@@ -62,20 +59,20 @@ A web-based application that enables students to mark attendance within a 10-min
    ```bash
     php artisan key:generate
    ```
-   ```
+   
 
 6. **Install dependencies:**
    ```bash
     php artisan migrate
    ```
-      ```
+   
    
 
 7. **Run seeder:**
    ```bash
     php artisan migrate:fresh --seed
    ```
-   ```
+   
 
 
 8. **Start the development server:**
