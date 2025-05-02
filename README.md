@@ -76,3 +76,22 @@ A web-based application that enables students to mark attendance within a 10-min
    ```bash
     php artisan serve
    ```
+
+
+### Frontend Setup
+
+1. **Navigate to the frontend directory:**
+   ```bash
+    \smart_attendance_and_scheduling_system>cd frontend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+    npm install
+   ```
+   
+3. **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+
