@@ -108,7 +108,7 @@ email: see your database admins, instructors, and students table
 password: password
 ```
 
-### Here are some users' credentials examples have been given below, and these credentials don't match with your database
+### Here are some users' credentials examples have been given below, and these credentials will not match with your database
 
 #### Instructor
 ```
