@@ -39,37 +39,40 @@ A web-based application that enables students to mark attendance within a 10-min
 1. **Clone the repository:**
    ```bash
     git clone https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+   ```
 
 2. **Install dependencies:**
    ```bash
     cd smart_attendance_and_scheduling_system
-
+   ```
 
 
 3. **Install dependencies:**
    ```bash
     https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
-
+   ```
 
 4. Copy ```.env.example``` to ```.env``` and configure your database settings.
 
 
-3. **Install dependencies:**
+5. **Install dependencies:**
    ```bash
     php artisan key:generate
+   ```
 
-
-
-3. **Install dependencies:**
+6. **Install dependencies:**
    ```bash
     php artisan migrate
+   ```
+   
 
-
-3. **Run seeder:**
+7. **Run seeder:**
    ```bash
     php artisan migrate:fresh --seed
+   ```
 
 
-3. **Start the development server:**
+8. **Start the development server:**
    ```bash
     php artisan serve
+   ```
