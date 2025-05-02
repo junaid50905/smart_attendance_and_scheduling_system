@@ -105,7 +105,19 @@ email: see your database admins, instructors, and students table
 password: password
 ```
 
+### Here are some users' credentials have been given below
 
+#### Instructor
+```
+email: nbotsford@example.org
+password: password
+```
+
+#### Student
+```
+email: nankunding@example.net
+password: password
+```
 
 
 
