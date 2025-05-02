@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Attendance;
 use App\Models\Batch;
 use App\Models\Instructor;
 use App\Models\Student;
@@ -28,31 +29,59 @@ class AdminAuthController extends Controller
         ]);
     }
 
+    // public function dashboard()
+    // {
+    //     $admins = Admin::count();
+    //     $instructors = Instructor::count();
+    //     $batches = Batch::count();
+    //     $students = Student::count();
+        
+    
+    //     return response()->json([
+    //         'overallinfo' => [
+    //             [
+    //                 'name' => 'Admin',
+    //                 'count' => $admins
+    //             ],
+    //             [
+    //                 'name' => 'Instructor',
+    //                 'count' => $instructors
+    //             ],
+    //             [
+    //                 'name' => 'Batch',
+    //                 'count' => $batches
+    //             ],
+    //             [
+    //                 'name' => 'Student',
+    //                 'count' => $students
+    //             ],
+    //         ]
+    //     ]);
+    // }
+
     public function dashboard()
     {
         $admins = Admin::count();
         $instructors = Instructor::count();
         $batches = Batch::count();
         $students = Student::count();
-    
+
+        $presentCount = Attendance::where('status', 'present')->count();
+        $absentCount = Attendance::where('status', 'absent')->count();
+        $lateCount = Attendance::where('status', 'late')->count();
+
+
         return response()->json([
             'overallinfo' => [
-                [
-                    'name' => 'Admin',
-                    'count' => $admins
-                ],
-                [
-                    'name' => 'Instructor',
-                    'count' => $instructors
-                ],
-                [
-                    'name' => 'Batch',
-                    'count' => $batches
-                ],
-                [
-                    'name' => 'Student',
-                    'count' => $students
-                ],
+                ['name' => 'Admin', 'count' => $admins],
+                ['name' => 'Instructor', 'count' => $instructors],
+                ['name' => 'Batch', 'count' => $batches],
+                ['name' => 'Student', 'count' => $students],
+            ],
+            'attendanceStats' => [
+                ['status' => 'Present', 'count' => $presentCount],
+                ['status' => 'Absent', 'count' => $absentCount],
+                ['status' => 'Late', 'count' => $lateCount],
             ]
         ]);
     }

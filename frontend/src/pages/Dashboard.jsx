@@ -3,10 +3,30 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import api from "../services/api";
 
-const Dashboard = () => {
-    const [data, setData] = useState();
-    const [loading, setLoading] = useState(true);
+import { Bar } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from "chart.js";
 
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+const Dashboard = () => {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [attendanceStats, setAttendanceStats] = useState([]);
     const [instructorStat, setInstructorStat] = useState({});
 
     const role = localStorage.getItem("role");
@@ -21,9 +41,11 @@ const Dashboard = () => {
                     },
                 });
                 setData(response.data.overallinfo);
+                setAttendanceStats(response.data.attendanceStats || []);
             } catch (error) {
                 console.error("Failed to fetch dashboard data:", error);
-                setData([]); // fallback
+                setData([]);
+                setAttendanceStats([]);
             } finally {
                 setLoading(false);
             }
@@ -39,18 +61,19 @@ const Dashboard = () => {
                 });
                 setInstructorStat(response.data);
             } catch (error) {
-                console.error("Failed to fetch dashboard data:", error);
-                setInstructorStat();
-            } finally {
-                setLoading(false);
+                console.error("Failed to fetch instructor stats:", error);
+                setInstructorStat({});
             }
         };
 
         fetchDashboardData();
-        fetchInstructorStat();
-    }, []);
 
-    if (role == "admin") {
+        if (role === "instructor") {
+            fetchInstructorStat();
+        }
+    }, [role]);
+
+    if (role === "admin") {
         return (
             <div className="flex">
                 <Sidebar />
@@ -63,27 +86,72 @@ const Dashboard = () => {
                         {loading ? (
                             <p>Loading...</p>
                         ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {data.map((item, i) => (
-                                    <div
-                                        key={i}
-                                        className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
-                                    >
-                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                                            Total {item.name}
-                                        </p>
-                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                            {item.count}
-                                        </h5>
+                            <>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {data.map((item, i) => (
+                                        <div
+                                            key={i}
+                                            className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
+                                        >
+                                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                                Total {item.name}
+                                            </p>
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                {item.count}
+                                            </h5>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {attendanceStats.length > 0 && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                                        <div className="mt-10 bg-white p-6 rounded-lg shadow">
+                                            <h3 className="text-xl font-semibold mb-4">
+                                                Attendance Overview
+                                            </h3>
+                                            <Bar
+                                                data={{
+                                                    labels: attendanceStats.map(
+                                                        (item) => item.status
+                                                    ),
+                                                    datasets: [
+                                                        {
+                                                            label: "Attendance Count",
+                                                            data: attendanceStats.map(
+                                                                (item) =>
+                                                                    item.count
+                                                            ),
+                                                            backgroundColor: [
+                                                                "#2ecc71",
+                                                                "#c0392b",
+                                                                "#f1c40f",
+                                                            ],
+                                                        },
+                                                    ],
+                                                }}
+                                                options={{
+                                                    responsive: true,
+                                                    plugins: {
+                                                        legend: {
+                                                            position: "top",
+                                                        },
+                                                        title: {
+                                                            display: true,
+                                                            text: "Attendance Summary",
+                                                        },
+                                                    },
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
+                                )}
+                            </>
                         )}
                     </main>
                 </div>
             </div>
         );
-    } else if (role == "instructor") {
+    } else if (role === "instructor") {
         return (
             <div className="flex">
                 <Sidebar />
@@ -93,7 +161,6 @@ const Dashboard = () => {
                         <h2 className="text-2xl font-semibold mb-4">
                             All Statistics
                         </h2>
-
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -109,13 +176,11 @@ const Dashboard = () => {
                                     {instructorStat.class_schedule || 0}
                                     <br />
                                     <span className="text-sm">
-                                        Total schedule classes
+                                        Total scheduled classes
                                     </span>
                                 </h5>
                             </div>
                         </div>
-
-
                     </main>
                 </div>
             </div>
@@ -130,7 +195,7 @@ const Dashboard = () => {
                         <h2 className="text-2xl font-semibold mb-4">
                             All Info
                         </h2>
-                        <h4>Studnet</h4>
+                        <h4>Student</h4>
                     </main>
                 </div>
             </div>
