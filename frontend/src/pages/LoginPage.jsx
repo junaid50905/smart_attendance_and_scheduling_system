@@ -34,7 +34,7 @@ const LoginPage = () => {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200">
             <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
-                    EduMate Login
+                Smart Attendance & Scheduling System Login
                 </h2>
 
                 {error && (

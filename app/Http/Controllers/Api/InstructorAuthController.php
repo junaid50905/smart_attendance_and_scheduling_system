@@ -147,9 +147,11 @@ class InstructorAuthController extends Controller
         $instructor = Auth::guard('instructor')->user();
 
         $batches = BatchInstructor::get()->count();
+        $classSchedules = ClassSchedule::where('instructor_id', $instructor->id)->count();
 
         return response()->json([
-            'batches' => $batches
+            'batches' => $batches,
+            'class_schedule' => $classSchedules
         ]);
     }
 

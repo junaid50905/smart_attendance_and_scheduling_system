@@ -46,7 +46,7 @@ const Sidebar = () => {
 
     return (
         <div className="w-64 h-screen bg-white border-r shadow-sm p-4">
-            <h1 className="text-2xl font-bold text-blue-600 mb-6">EduMate</h1>
+            <h1 className="text-xl font-bold text-blue-600 mb-6">Smart Attendance & Scheduling System</h1>
             <ul className="space-y-3">
                 {filteredMenuItems.map((item) => (
                     <li key={item.path}>

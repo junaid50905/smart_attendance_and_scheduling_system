@@ -96,6 +96,51 @@ class StudentAuthController extends Controller
      * @param mixed $studentId
      * @return mixed|\Illuminate\Http\JsonResponse
      */
+
+     public function markAttendance($classScheduleId, $studentId)
+     {
+         // Check if attendance already exists
+         $existing = Attendance::where('class_schedule_id', $classScheduleId)
+             ->where('student_id', $studentId)
+             ->first();
+     
+         if ($existing) {
+             return response()->json([
+                 'message' => 'Attendance already marked.'
+             ], 409); // Conflict
+         }
+     
+         // Retrieve the class schedule
+         $classSchedule = ClassSchedule::find($classScheduleId);
+     
+         if (!$classSchedule) {
+             return response()->json([
+                 'message' => 'Class schedule not found.'
+             ], 404);
+         }
+     
+         // Parse the class start time
+         $start_time = Carbon::parse($classSchedule->start_time);
+         $attendance_deadline = $start_time->copy()->addMinutes(10);
+         $now = Carbon::now();
+     
+         // Determine attendance status
+         $status = $now->lessThanOrEqualTo($attendance_deadline) ? 'present' : 'late';
+     
+         // Create attendance record
+         $attendance = Attendance::create([
+             'class_schedule_id' => $classScheduleId,
+             'student_id' => $studentId,
+             'status' => $status,
+             'marked_at' => $now,
+         ]);
+     
+         return response()->json([
+             'message' => 'Attendance marked successfully.',
+             'data' => $attendance
+         ]);
+     }
+
     // public function markAttendance($classScheduleId, $studentId)
     // {
     //     // Check if attendance already exists
@@ -109,11 +154,29 @@ class StudentAuthController extends Controller
     //         ], 409); // Conflict
     //     }
 
+    //     // Retrieve class schedule
+    //     $classSchedule = ClassSchedule::find($classScheduleId);
+
+    //     if (!$classSchedule) {
+    //         return response()->json([
+    //             'message' => 'Class schedule not found.'
+    //         ], 404);
+    //     }
+
+    //     // Parse start time and calculate attendance window end time
+    //     $start_time = Carbon::parse($classSchedule->start_time);
+    //     $end_time = $start_time->copy()->addMinutes(10);
+    //     $now = Carbon::now();
+
+    //     // Determine attendance status based on current time
+    //     $status = $now->gt($end_time) ? 'late' : 'present';
+
+    //     // Create attendance record
     //     $attendance = Attendance::create([
     //         'class_schedule_id' => $classScheduleId,
     //         'student_id' => $studentId,
-    //         'status' => 'present',
-    //         'marked_at' => Carbon::now(),
+    //         'status' => $status,
+    //         'marked_at' => $now,
     //     ]);
 
     //     return response()->json([
@@ -122,44 +185,44 @@ class StudentAuthController extends Controller
     //     ]);
     // }
 
-    public function markAttendance($classScheduleId, $studentId)
-    {
-        // Check if attendance already exists
-        $existing = Attendance::where('class_schedule_id', $classScheduleId)
-            ->where('student_id', $studentId)
-            ->first();
+    // public function markAttendance($classScheduleId, $studentId)
+    // {
+    //     // Check if attendance already exists
+    //     $existing = Attendance::where('class_schedule_id', $classScheduleId)
+    //         ->where('student_id', $studentId)
+    //         ->first();
 
-        if ($existing) {
-            return response()->json([
-                'message' => 'Attendance already marked.'
-            ], 409); // Conflict
-        }
+    //     if ($existing) {
+    //         return response()->json([
+    //             'message' => 'Attendance already marked.'
+    //         ], 409); // Conflict
+    //     }
 
-        $classSchedule = ClassSchedule::findOrFail($classScheduleId);
-        $startTime = Carbon::parse($classSchedule->start_time);
-        $now = Carbon::now();
+    //     $classSchedule = ClassSchedule::findOrFail($classScheduleId);
+    //     $startTime = Carbon::parse($classSchedule->start_time);
+    //     $now = Carbon::now();
 
-        // Determine attendance status
-        if ($now->between($startTime->copy()->subMinutes(10), $startTime->copy()->addMinutes(10))) {
-            $status = 'present';
-        } elseif ($now->greaterThan($startTime->copy()->addMinutes(10))) {
-            $status = 'late';
-        } else {
-            $status = 'absent';
-        }
+    //     // Determine attendance status
+    //     if ($now->between($startTime->copy()->subMinutes(10), $startTime->copy()->addMinutes(10))) {
+    //         $status = 'present';
+    //     } elseif ($now->greaterThan($startTime->copy()->addMinutes(10))) {
+    //         $status = 'late';
+    //     } else {
+    //         $status = 'absent';
+    //     }
 
-        $attendance = Attendance::create([
-            'class_schedule_id' => $classScheduleId,
-            'student_id' => $studentId,
-            'status' => $status,
-            'marked_at' => $now,
-        ]);
+    //     $attendance = Attendance::create([
+    //         'class_schedule_id' => $classScheduleId,
+    //         'student_id' => $studentId,
+    //         'status' => $status,
+    //         'marked_at' => $now,
+    //     ]);
 
-        return response()->json([
-            'message' => 'Attendance marked successfully.',
-            'data' => $attendance
-        ]);
-    }
+    //     return response()->json([
+    //         'message' => 'Attendance marked successfully.',
+    //         'data' => $attendance
+    //     ]);
+    // }
 
     /**
      * Summary of logout

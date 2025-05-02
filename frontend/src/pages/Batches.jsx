@@ -73,10 +73,6 @@ const Batches = () => {
                                                     </span>
                                                 </div>
                                             </h3>
-                                            <p className="mt-2 text-sm text-gray-600">
-                                                {batch.batch_schedules} Schedule
-                                                Class(s)
-                                            </p>
                                         </div>
                                     </Link>
                                 </>
