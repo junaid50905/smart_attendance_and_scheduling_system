@@ -23,7 +23,12 @@ A web-based application that enables students to mark attendance within a 10-min
 
 ## Screenshots
 
-*Include relevant screenshots here*
+##### Admin Dashboard
+![Dashboard Screenshot](./screenshorts/admin%20dashboard.png)
+
+##### Student Upcoming Classes and Mark Attendance
+![Dashboard Screenshot](./screenshorts/student-%20upcoming%20classes%20and%20attendance.png)
+
 
 ## Getting Started
 
