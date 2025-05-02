@@ -36,5 +36,6 @@ Route::middleware('auth:instructor')->post('instructor/logout', [InstructorAuthC
 // Admin
 Route::post('admin/login', [AdminAuthController::class, 'login']);
 Route::middleware('auth:admin')->get('admin/dashboard', [AdminAuthController::class, 'dashboard']);
+Route::middleware('auth:admin')->get('admin/export-attendance', [AdminAuthController::class, 'exportAttendance']);
 Route::middleware('auth:admin')->post('admin/logout', [AdminAuthController::class, 'logout']);
 

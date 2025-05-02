@@ -29,6 +29,33 @@ const Dashboard = () => {
     const [attendanceStats, setAttendanceStats] = useState([]);
     const [instructorStat, setInstructorStat] = useState({});
 
+    const handleExportAttendance = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await api.get("/admin/export-attendance", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                responseType: "blob", // IMPORTANT: tell Axios it's a binary file
+            });
+
+            const blob = new Blob([response.data], { type: "text/csv" });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "attendance.csv";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error exporting attendance:", error);
+            alert("Failed to export attendance.");
+        }
+    };
+
     const role = localStorage.getItem("role");
 
     useEffect(() => {
@@ -87,7 +114,7 @@ const Dashboard = () => {
                             <p>Loading...</p>
                         ) : (
                             <>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                                     {data.map((item, i) => (
                                         <div
                                             key={i}
@@ -106,9 +133,17 @@ const Dashboard = () => {
                                 {attendanceStats.length > 0 && (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                                         <div className="mt-10 bg-white p-6 rounded-lg shadow">
+                                            <button
+                                                onClick={handleExportAttendance}
+                                                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition cursor-pointer"
+                                            >
+                                                Export Attendance
+                                            </button>
+
                                             <h3 className="text-xl font-semibold mb-4">
                                                 Attendance Overview
                                             </h3>
+
                                             <Bar
                                                 data={{
                                                     labels: attendanceStats.map(

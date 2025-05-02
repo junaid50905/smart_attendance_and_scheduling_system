@@ -10,6 +10,8 @@ use App\Models\Instructor;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 
 class AdminAuthController extends Controller
@@ -25,7 +27,7 @@ class AdminAuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'user' => Auth::guard('admin')->user(),
-            'role' => 'admin',           
+            'role' => 'admin',
         ]);
     }
 
@@ -35,8 +37,8 @@ class AdminAuthController extends Controller
     //     $instructors = Instructor::count();
     //     $batches = Batch::count();
     //     $students = Student::count();
-        
-    
+
+
     //     return response()->json([
     //         'overallinfo' => [
     //             [
@@ -58,6 +60,8 @@ class AdminAuthController extends Controller
     //         ]
     //     ]);
     // }
+
+
 
     public function dashboard()
     {
@@ -85,7 +89,57 @@ class AdminAuthController extends Controller
             ]
         ]);
     }
-    
+
+    public function exportAttendance()
+    {
+        $attendances = Attendance::with('student', 'classSchedule')->get();
+
+        $csvData = "Student Name,Status,Marked At\n";
+        foreach ($attendances as $record) {
+            $csvData .= $record->student->name . "," . $record->status . "," . $record->marked_at . "\n";
+        }
+
+        $response = Response::make($csvData, 200);
+        $response->header('Content-Type', 'text/csv');
+        $response->header('Content-Disposition', 'attachment; filename="attendance.csv"');
+
+        return $response;
+    }
+
+
+    // public function dashboard()
+    // {
+    //     $admins = Admin::count();
+    //     $instructors = Instructor::count();
+    //     $batches = Batch::count();
+    //     $students = Student::count();
+
+    //     $attendanceStats = Attendance::select('status', DB::raw('count(*) as count'))
+    //         ->groupBy('status')
+    //         ->get();
+
+    //     $attendanceData = Attendance::with('student')
+    //         ->get()
+    //         ->map(function ($att) {
+    //             return [
+    //                 'student_name' => $att->student->name ?? 'N/A',
+    //                 'status' => $att->status,
+    //                 'marked_at' => $att->marked_at,
+    //             ];
+    //         });
+
+    //     return response()->json([
+    //         'overallinfo' => [
+    //             ['name' => 'Admin', 'count' => $admins],
+    //             ['name' => 'Instructor', 'count' => $instructors],
+    //             ['name' => 'Batch', 'count' => $batches],
+    //             ['name' => 'Student', 'count' => $students],
+    //         ],
+    //         'attendanceStats' => $attendanceStats,
+    //         'attendanceData' => $attendanceData,
+    //     ]);
+    // }
+
 
 
     public function logout()
