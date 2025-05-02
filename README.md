@@ -34,6 +34,22 @@ A web-based application that enables students to mark attendance within a 10-min
 - Node.js & npm
 - MySQL
 
+### Project Structure
+
+```
+
+├── smart_attendance_and_scheduling_system/        # Laravel backend
+│   ├── app/
+│   ├── routes/
+│   └── ...
+├── frontend/       # React frontend
+│   ├── src/
+│   ├── public/
+│   └── ...
+└── README.md
+
+```
+
 ### Backend Setup
 
 1. **Clone the repository:**
