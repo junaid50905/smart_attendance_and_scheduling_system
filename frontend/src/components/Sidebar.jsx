@@ -20,7 +20,6 @@ const Sidebar = () => {
         { path: "/dashboard", label: "Home", icon: <Home size={20} />, roles: ["student", "instructor", "admin"] },
         { path: "/upcoming-classes", label: "Upcoming Classes", icon: <CalendarDays size={20} />, roles: ["student"] },
         { path: "/batches", label: "Batches", icon: <FileText size={20} />, roles: ["instructor"] },
-        { path: "/settings", label: "Settings", icon: <Settings size={20} />, roles: ["admin"] },
     ];
 
     const filteredMenuItems = allMenuItems.filter(item => item.roles.includes(role));
