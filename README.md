@@ -38,38 +38,89 @@ A web-based application that enables students to mark attendance within a 10-min
 
 1. **Clone the repository:**
    ```bash
-    https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+    git clone https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+   ```
 
 2. **Install dependencies:**
    ```bash
     cd smart_attendance_and_scheduling_system
-
+   ```
 
 
 3. **Install dependencies:**
    ```bash
-    https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
-
+    composer install
+   ```
 
 4. Copy ```.env.example``` to ```.env``` and configure your database settings.
 
 
-3. **Install dependencies:**
+5. **Install dependencies:**
    ```bash
     php artisan key:generate
+   ```
 
-
-
-3. **Install dependencies:**
+6. **Install dependencies:**
    ```bash
     php artisan migrate
+   ```
+   
 
-
-3. **Run seeder:**
+7. **Run seeder:**
    ```bash
     php artisan migrate:fresh --seed
+   ```
 
 
-3. **Start the development server:**
+8. **Start the development server:**
    ```bash
     php artisan serve
+   ```
+
+
+### Frontend Setup
+
+1. **Navigate to the frontend directory:**
+   ```bash
+    \smart_attendance_and_scheduling_system>cd frontend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+    npm install
+   ```
+   
+3. **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+
+Everything is Done. Now you are ready to use the application.
+
+### Login Credentials
+For all users (admin, instructor, student) password is the same
+
+```
+email: see your database admins, instructors, and students table
+password: password
+```
+
+### Here are some users' credentials have been given below
+
+#### Instructor
+```
+email: nbotsford@example.org
+password: password
+```
+
+#### Student
+```
+email: nankunding@example.net
+password: password
+```
+
+
+
+
+
+
