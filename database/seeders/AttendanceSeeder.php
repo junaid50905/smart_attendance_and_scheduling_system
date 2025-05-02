@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use App\Models\ClassSchedule;
 use App\Models\Attendance;
@@ -21,7 +22,7 @@ class AttendanceSeeder extends Seeder
                         'class_schedule_id' => $schedule->id,
                         'student_id' => $student->id,
                         'status' => Arr::random(['present', 'late', 'absent']),
-                        'marked_at' => $schedule->start_time->copy()->addMinutes(rand(-5, 15)),
+                        'marked_at' => Carbon::parse($schedule->start_time)->copy()->addMinutes(rand(-5, 15)),
                     ]);
                 }
             }

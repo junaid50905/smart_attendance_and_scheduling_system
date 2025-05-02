@@ -15,6 +15,10 @@ class ClassSchedule extends Model
     protected $fillable = ['batch_id', 'instructor_id', 'topic', 'start_time', 'duration'];
 
 
+    protected $casts = [
+        'start_time' => 'datetime',
+    ];
+
 
     public function batch()
     {
