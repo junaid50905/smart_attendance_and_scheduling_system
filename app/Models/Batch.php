@@ -15,10 +15,7 @@ class Batch extends Model
     protected $fillable = ['name'];
 
 
-    public function students()
-    {
-        return $this->belongsToMany(Student::class);
-    }
+
 
     public function instructors()
     {
@@ -27,7 +24,12 @@ class Batch extends Model
 
     public function classSchedules()
     {
-        return $this->hasMany(ClassSchedule::class);
+        return $this->hasMany(ClassSchedule::class)->orderByDesc('id');
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'batch_student');
     }
 
 

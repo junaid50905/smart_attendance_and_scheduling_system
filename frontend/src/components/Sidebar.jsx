@@ -13,40 +13,28 @@ import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
     const location = useLocation();
-    const menuItems = [
-        { path: "/dashboard", label: "Home", icon: <Home size={20} /> },
-        {
-            path: "/upcoming-classes",
-            label: "Upcomming Classes (st)",
-            icon: <CalendarDays size={20} />,
-        },
-        {
-            path: "/mark-attendance",
-            label: "Mark attendance (st)",
-            icon: <ClipboardCheck size={20} />,
-        },
-        {
-            path: "/batches",
-            label: "Batches",
-            icon: <FileText size={20} />,
-        },
-        { path: "/settings", label: "Settings", icon: <Settings size={20} /> },
-    ];
     const navigate = useNavigate();
+    const role = localStorage.getItem("role");
+
+    const allMenuItems = [
+        { path: "/dashboard", label: "Home", icon: <Home size={20} />, roles: ["student", "instructor", "admin"] },
+        { path: "/upcoming-classes", label: "Upcoming Classes", icon: <CalendarDays size={20} />, roles: ["student"] },
+        { path: "/batches", label: "Batches", icon: <FileText size={20} />, roles: ["instructor"] },
+        { path: "/settings", label: "Settings", icon: <Settings size={20} />, roles: ["admin"] },
+    ];
+
+    const filteredMenuItems = allMenuItems.filter(item => item.roles.includes(role));
 
     const handleLogout = async () => {
         try {
-            const role = localStorage.getItem("role");
             const token = localStorage.getItem("token");
-
             if (!token) throw new Error("No token found");
 
             await api.post(`/${role}/logout`, null, {
                 headers: {
-                  Authorization: `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${token}`,
+                },
             });
-
         } catch (err) {
             console.error("Logout failed:", err);
         } finally {
@@ -60,7 +48,7 @@ const Sidebar = () => {
         <div className="w-64 h-screen bg-white border-r shadow-sm p-4">
             <h1 className="text-2xl font-bold text-blue-600 mb-6">EduMate</h1>
             <ul className="space-y-3">
-                {menuItems.map((item) => (
+                {filteredMenuItems.map((item) => (
                     <li key={item.path}>
                         <Link
                             to={item.path}

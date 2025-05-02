@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
-class Student extends Authenticatable implements JWTSubject 
+class Student extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
@@ -19,22 +19,24 @@ class Student extends Authenticatable implements JWTSubject
     protected $hidden = ['password'];
 
 
-     // JWT implementation
-     public function getJWTIdentifier()
-     {
-         return $this->getKey();
-     }
- 
-     public function getJWTCustomClaims()
-     {
-         return [];
-     }
+    // JWT implementation
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     // Relationships
+
     public function batches()
     {
-        return $this->belongsToMany(Batch::class);
+        return $this->belongsToMany(Batch::class, 'batch_student');
     }
+
 
     public function attendances()
     {

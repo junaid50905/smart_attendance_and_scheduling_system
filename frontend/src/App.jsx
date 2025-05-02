@@ -12,6 +12,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 import "./App.css";
 import Batches from "./pages/Batches";
+import BatchDetails from "./pages/BatchDetails";
 
 function App() {
 
@@ -40,13 +41,11 @@ function App() {
                         element={<UpcomingClasses />}
                     />
                     <Route
-                        path="/mark-attendance"
-                        element={<MarkAttendance />}
-                    />
-                    <Route
                         path="/batches"
                         element={<Batches />}
                     />
+                    <Route path="/batches/:id" element={<BatchDetails />} />
+
                 </Route>
 
                 {/* Catch-all */}

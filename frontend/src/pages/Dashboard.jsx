@@ -7,6 +7,8 @@ const Dashboard = () => {
     const [data, setData] = useState();
     const [loading, setLoading] = useState(true);
 
+    const [instructorStat, setInstructorStat] = useState([])
+
     const role = localStorage.getItem("role");
 
     useEffect(() => {
@@ -29,6 +31,31 @@ const Dashboard = () => {
 
         fetchDashboardData();
     }, []);
+
+
+    useEffect(() => {
+        const fetchInstructorStat = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await api.get(`/${role}/statistics`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setInstructorStat(response.batches)
+            } catch (error) {
+                console.error("Failed to fetch dashboard data:", error);
+                setInstructorStat([]); // fallback
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchInstructorStat();
+    }, []);
+
+    console.log(instructorStat);
+    
 
     if (role == 'admin') {
       return (
