@@ -38,7 +38,7 @@ A web-based application that enables students to mark attendance within a 10-min
 
 1. **Clone the repository:**
    ```bash
-    https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
+    git clone https://github.com/junaid50905/smart_attendance_and_scheduling_system.git
 
 2. **Install dependencies:**
    ```bash
