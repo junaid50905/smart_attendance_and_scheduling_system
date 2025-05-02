@@ -97,9 +97,13 @@ A web-based application that enables students to mark attendance within a 10-min
 
 Everything is Done. Now you are ready to use the application.
 
-For all user (admin, instructor, student) password = password
+### Login Credentials
+For all users (admin, instructor, student) password is the same
 
-
+```
+email: see your database admins, instructors, and students table
+password: password
+```
 
 
 
