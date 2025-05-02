@@ -95,5 +95,16 @@ A web-based application that enables students to mark attendance within a 10-min
     npm run dev
     ```
 
-Everything is Done. Now your are ready to use the application.
+Everything is Done. Now you are ready to use the application.
+
+For all user (admin, instructor, student) password = password
+
+
+
+
+
+
+
+
+
 
