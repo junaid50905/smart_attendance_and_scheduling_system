@@ -77,16 +77,30 @@ class AdminAuthController extends Controller
 
         return response()->json([
             'overallinfo' => [
-                ['name' => 'Admin', 'count' => $admins],
-                ['name' => 'Instructor', 'count' => $instructors],
-                ['name' => 'Batch', 'count' => $batches],
-                ['name' => 'Student', 'count' => $students],
+                ['name' => 'Admin', 'count' => $admins, 'link' => null],
+                ['name' => 'Instructor', 'count' => $instructors, 'link' => null],
+                ['name' => 'Batch', 'count' => $batches, 'link' => 'all-batches'],
+                ['name' => 'Student', 'count' => $students, 'link' => null],
             ],
             'attendanceStats' => [
                 ['status' => 'Present', 'count' => $presentCount],
                 ['status' => 'Absent', 'count' => $absentCount],
                 ['status' => 'Late', 'count' => $lateCount],
             ]
+        ]);
+    }
+
+    /**
+     * Summary of branchesInfo
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function branchesInfo()
+    {
+        $batches = Batch::withCount(['students', 'instructors'])->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $batches,
         ]);
     }
 

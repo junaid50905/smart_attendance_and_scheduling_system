@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import "./App.css";
 import Batches from "./pages/Batches";
 import BatchDetails from "./pages/BatchDetails";
+import AllBranches from "./pages/AllBatches";
 
 function App() {
 
@@ -43,6 +44,10 @@ function App() {
                     <Route
                         path="/batches"
                         element={<Batches />}
+                    />
+                    <Route
+                        path="/all-batches"
+                        element={<AllBranches />}
                     />
                     <Route path="/batches/:id" element={<BatchDetails />} />
 
