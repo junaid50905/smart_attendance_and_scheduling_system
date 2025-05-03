@@ -10,6 +10,8 @@ use App\Models\Instructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 
 class InstructorAuthController extends Controller
@@ -114,26 +116,34 @@ class InstructorAuthController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function createNewScheduleClass(Request $request, $batchId, $instructorId)
-    {
-        $validated = $request->validate([
-            'topic' => 'required|string|max:255',
-            'start_time' => 'required|date',
-            'duration' => 'required|integer|min:1',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'topic' => 'required|string|max:255',
+        'start_time' => 'required|date|after_or_equal:now',
+        'duration' => 'required|integer|min:1',
+    ]);
 
-        $schedule = new ClassSchedule();
-        $schedule->batch_id = $batchId;
-        $schedule->instructor_id = $instructorId;
-        $schedule->topic = $validated['topic'];
-        $schedule->start_time = $validated['start_time'];
-        $schedule->duration = $validated['duration'];
-        $schedule->save();
-
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'Schedule class created successfully.',
-            'data' => $schedule
-        ], 201);
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422);
     }
+
+    $schedule = ClassSchedule::create([
+        'batch_id' => $batchId,
+        'instructor_id' => $instructorId,
+        'topic' => $request->input('topic'),
+        'start_time' => $request->input('start_time'),
+        'duration' => $request->input('duration'),
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Schedule class created successfully.',
+        'data' => $schedule,
+    ], 201);
+}
 
 
 

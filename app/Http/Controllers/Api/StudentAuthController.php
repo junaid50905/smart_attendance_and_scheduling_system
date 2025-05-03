@@ -53,6 +53,41 @@ class StudentAuthController extends Controller
      * Summary of upcomingClasses
      * @return void
      */
+    // public function upcomingClasses()
+    // {
+    //     $student = Auth::guard('student')->user();
+
+    //     // Get batch IDs the student is enrolled in
+    //     $batchIds = $student->batches()->pluck('batches.id');
+
+    //     // Get current time
+    //     $now = Carbon::now();
+
+    //     // Get class schedules with future end times
+    //     $upcomingClasses = ClassSchedule::with(['batch', 'instructor'])
+    //         ->whereIn('batch_id', $batchIds)
+    //         ->whereRaw("DATE_ADD(start_time, INTERVAL duration MINUTE) > ?", [$now])
+    //         ->orderBy('start_time', 'asc')
+    //         ->get();
+
+    //     // Add attendance data to each class
+    //     $classesWithAttendance = $upcomingClasses->map(function ($class) use ($student) {
+    //         $attendance = Attendance::where('class_schedule_id', $class->id)
+    //             ->where('student_id', $student->id)
+    //             ->first();
+
+    //         // Attach the full attendance record or null
+    //         $class->attendance = $attendance;
+
+    //         return $class;
+    //     });
+
+    //     return response()->json([
+    //         'student_id' => $student->id,
+    //         'upcoming_classes' => $classesWithAttendance
+    //     ]);
+    // }
+
     public function upcomingClasses()
     {
         $student = Auth::guard('student')->user();
@@ -70,7 +105,7 @@ class StudentAuthController extends Controller
             ->orderBy('start_time', 'asc')
             ->get();
 
-        // Add attendance data to each class
+        // Add attendance data and format start_time to each class
         $classesWithAttendance = $upcomingClasses->map(function ($class) use ($student) {
             $attendance = Attendance::where('class_schedule_id', $class->id)
                 ->where('student_id', $student->id)
@@ -78,6 +113,10 @@ class StudentAuthController extends Controller
 
             // Attach the full attendance record or null
             $class->attendance = $attendance;
+
+            // Format the start_time in the desired format
+            $class->formatted_start_time = Carbon::parse($class->start_time)
+                ->format('h:i A | d-M-Y'); // Format: 08-13 PM | 03-May-2025
 
             return $class;
         });
@@ -97,49 +136,87 @@ class StudentAuthController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
 
-     public function markAttendance($classScheduleId, $studentId)
-     {
-         // Check if attendance already exists
-         $existing = Attendance::where('class_schedule_id', $classScheduleId)
-             ->where('student_id', $studentId)
-             ->first();
-     
-         if ($existing) {
-             return response()->json([
-                 'message' => 'Attendance already marked.'
-             ], 409); // Conflict
-         }
-     
-         // Retrieve the class schedule
-         $classSchedule = ClassSchedule::find($classScheduleId);
-     
-         if (!$classSchedule) {
-             return response()->json([
-                 'message' => 'Class schedule not found.'
-             ], 404);
-         }
-     
-         // Parse the class start time
-         $start_time = Carbon::parse($classSchedule->start_time);
-         $attendance_deadline = $start_time->copy()->addMinutes(10);
-         $now = Carbon::now();
-     
-         // Determine attendance status
-         $status = $now->lessThanOrEqualTo($attendance_deadline) ? 'present' : 'late';
-     
-         // Create attendance record
-         $attendance = Attendance::create([
-             'class_schedule_id' => $classScheduleId,
-             'student_id' => $studentId,
-             'status' => $status,
-             'marked_at' => $now,
-         ]);
-     
-         return response()->json([
-             'message' => 'Attendance marked successfully.',
-             'data' => $attendance
-         ]);
-     }
+    // public function markAttendance($classScheduleId, $studentId)
+    // {
+    //     // Check if attendance already exists
+    //     $existing = Attendance::where('class_schedule_id', $classScheduleId)
+    //         ->where('student_id', $studentId)
+    //         ->first();
+
+    //     if ($existing) {
+    //         return response()->json([
+    //             'message' => 'Attendance already marked.'
+    //         ], 409); // Conflict
+    //     }
+
+    //     // Retrieve the class schedule
+    //     $classSchedule = ClassSchedule::find($classScheduleId);
+
+    //     if (!$classSchedule) {
+    //         return response()->json([
+    //             'message' => 'Class schedule not found.'
+    //         ], 404);
+    //     }
+
+    //     // Parse the class start time
+    //     $start_time = Carbon::parse($classSchedule->start_time);
+    //     $attendance_deadline = $start_time->copy()->addMinutes(10);
+    //     $now = Carbon::now();
+
+    //     // Determine attendance status
+    //     $status = $now->lessThanOrEqualTo($attendance_deadline) ? 'present' : 'late';
+
+    //     // Create attendance record
+    //     $attendance = Attendance::create([
+    //         'class_schedule_id' => $classScheduleId,
+    //         'student_id' => $studentId,
+    //         'status' => $status,
+    //         'marked_at' => $now,
+    //     ]);
+
+    //     return response()->json([
+    //         'message' => 'Attendance marked successfully.',
+    //         'data' => $attendance
+    //     ]);
+    // }
+
+
+
+    public function markAttendance($classScheduleId, $studentId)
+    {
+
+        // $classSchedule = ClassSchedule::findOrFail($classScheduleId);
+
+        // $start_time = $classSchedule->start_time;
+
+        $now = Carbon::now();
+        // $start_time_plus_10 = Carbon::parse($start_time)->addMinutes(10);
+
+        // if ($now->gt($start_time_plus_10)) {
+        //     $status = 'late';
+        // } else {
+        //     $status = 'present';
+        // }
+
+
+
+        // Create attendance record
+        $attendance = Attendance::create([
+            'class_schedule_id' => $classScheduleId,
+            'student_id' => $studentId,
+            'status' => 'present',
+            'marked_at' => $now,
+        ]);
+
+        return response()->json([
+            'message' => 'Attendance marked successfully.',
+            'data' => $attendance
+        ]);
+    }
+
+
+
+
 
     // public function markAttendance($classScheduleId, $studentId)
     // {
